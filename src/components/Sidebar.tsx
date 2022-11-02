@@ -1,46 +1,102 @@
-import { Box, VStack, Text, HStack } from "@chakra-ui/react";
+import { Box, VStack, Text, HStack, Button } from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { RiDashboardFill } from "react-icons/ri";
-import { AiFillInfoCircle } from "react-icons/ai";
+import { AiOutlineAreaChart } from "react-icons/ai";
+import { HiOutlineNewspaper } from "react-icons/hi";
+import { RiCoinsFill } from "react-icons/ri";
+import { FaSwimmingPool, FaHandshake } from "react-icons/fa";
+import { redirect, useNavigate } from "react-router-dom";
 
 interface SidebarProps {}
 
 export const Sidebar: React.FC<SidebarProps> = () => {
+  let navigate = useNavigate();
+
   return (
-    <>
+    <Box>
+      <Box h={"70px"} />
       <Box
-        w={"400px"}
-        h={"calc(100vh - 80px)"}
-        bg={"rgba(255,255,255, 0.02)"}
-        backdropBlur="20px"
-        borderTopRightRadius={"30px"}
-        p="20px"
+        w={"240px"}
+        mx={"30px"}
+        borderRadius={"30px"}
+        py={"20px"}
+        px={"15px"}
+        flexShrink={"0"}
+        backdropFilter={"blur(10px)"}
+        borderColor={"rgba(255,255,255,0.2)"}
+        bg={"rgba(255,255,255,0.05)"}
+        borderWidth={"2px"}
         color={"gray.200"}
       >
-        <VStack
-          fontSize={"lg"}
-          fontWeight={"bold"}
-          justifyContent={"flex-start"}
-          alignItems={"start"}
-        >
-          <Link to={"dashboard"}>
+        <VStack fontSize={"lg"} alignItems={"flex-start"} gap={"15px"}>
+          <Button
+            variant={"ghost"}
+            fontWeight={"bold"}
+            fontSize={"lg"}
+            onClick={() => navigate("/dashboard")}
+          >
             <HStack>
               <RiDashboardFill />
               <Text>Dashboard</Text>
             </HStack>
-          </Link>
-          <Link to={"about"}>
+          </Button>
+          <Button
+            variant={"ghost"}
+            fontWeight={"bold"}
+            fontSize={"lg"}
+            onClick={() => navigate("/news")}
+          >
             <HStack>
-              <AiFillInfoCircle />
-              <Text>About</Text>
+              <HiOutlineNewspaper />
+              <Text>On-chain news</Text>
             </HStack>
-          </Link>
-          <Link to={"dashboard"}>Dashboard 3</Link>
-          <Link to={"dashboard"}>Dashboard 4</Link>
-          <Link to={"dashboard"}>Dashboard 5</Link>
+          </Button>
+          <Button
+            variant={"ghost"}
+            fontWeight={"bold"}
+            fontSize={"lg"}
+            onClick={() => navigate("/stablecoins")}
+          >
+            <HStack>
+              <RiCoinsFill />
+              <Text>Stablecoins</Text>
+            </HStack>
+          </Button>
+          <Button
+            variant={"ghost"}
+            fontWeight={"bold"}
+            fontSize={"lg"}
+            onClick={() => navigate("/dex-liquidity")}
+          >
+            <HStack>
+              <FaSwimmingPool />
+              <Text>DEX liquidity</Text>
+            </HStack>
+          </Button>
+          <Button
+            variant={"ghost"}
+            fontWeight={"bold"}
+            fontSize={"lg"}
+            onClick={() => navigate("/lending")}
+          >
+            <HStack>
+              <FaHandshake />
+              <Text>Lending positions</Text>
+            </HStack>
+          </Button>
+          <Button
+            variant={"ghost"}
+            fontWeight={"bold"}
+            fontSize={"lg"}
+            onClick={() => navigate("/derivatives")}
+          >
+            <HStack>
+              <AiOutlineAreaChart />
+              <Text>Derivatives</Text>
+            </HStack>
+          </Button>
         </VStack>
       </Box>
-    </>
+    </Box>
   );
 };

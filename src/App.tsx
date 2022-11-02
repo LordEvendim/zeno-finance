@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <NavigationBar />
-      <Flex flexDir={"row"}>
+      <Flex flexDir={"row"} alignItems={"flex-start"}>
         <Sidebar />
         <Routes>
           <Route path="/" element={<Mainpage />} />
