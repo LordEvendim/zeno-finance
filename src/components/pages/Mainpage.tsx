@@ -9,7 +9,9 @@ export const Mainpage: React.FC<MainpageProps> = () => {
       <Box h={"10"} />
       <Box w={"container.xl"}>
         <Flex>
-          <Heading mb={"4"}>Mainpage</Heading>
+          <Heading mb={"4"} color={"gray.200"}>
+            Mainpage
+          </Heading>
         </Flex>
         <Box h={"2"} />
       </Box>

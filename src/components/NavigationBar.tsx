@@ -29,33 +29,25 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
   }, [location]);
 
   return (
-    <Box w="100%">
-      <Flex mx={"auto"} w={"container.xl"} py={6} alignItems="center">
+    <Box w="100%" h={"80px"} display={"flex"} alignItems={"center"}>
+      <Flex mx={"auto"} w={"container.xl"} alignItems="center">
         <Box>
           <Heading>
             <NavLink to={"/"}>
               <Text
                 display={"inline"}
-                fontSize={"2xl"}
-                color={isHomeScreen ? "white" : "gray.600"}
-                textShadow={
-                  isHomeScreen
-                    ? "0px 0px 10px rgba(0,0,0,0.5)"
-                    : "0px 0px 10px rgba(0,0,0,0.2)"
-                }
+                fontSize={"3xl"}
+                color={"white"}
+                textShadow={"0px 0px 10px rgba(255,255,255,0.2)"}
               >
                 Zeno
               </Text>
               <Text
                 display={"inline"}
                 m={"0px"}
-                fontSize={"2xl"}
-                color={isHomeScreen ? "red.500" : "#68D3B6"}
-                textShadow={
-                  isHomeScreen
-                    ? "0px 0px 10px rgba(0,0,0,0.5)"
-                    : "0px 0px 10px rgba(0,0,0,0.2)"
-                }
+                fontSize={"3xl"}
+                color={"red.500"}
+                textShadow={"0px 0px 10px rgba(255,0,0,0.2)"}
               >
                 .finance
               </Text>
@@ -64,17 +56,15 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
         </Box>
         <Spacer />
         <HStack spacing="64px">
-          <Button variant="link" textColor="gray.600">
+          <Button variant="link" textColor="gray.200">
             <NavLink to={"/about"}>About</NavLink>
           </Button>
-          <Button variant="link" textColor="gray.600">
+          <Button variant="link" textColor="gray.200">
             <NavLink to={"/contracts"}>Contracts</NavLink>
           </Button>
-          <Button variant="link" textColor="gray.600">
-            <NavLink to={"/trade"}>
-              <Text color={isHomeScreen ? "red.500" : "red.500"}>
-                Dashboard
-              </Text>
+          <Button variant="link">
+            <NavLink to={"/dashboard"}>
+              <Text color={"gray.200"}>Dashboard</Text>
             </NavLink>
           </Button>
 
@@ -84,25 +74,26 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
               px={"15px"}
               borderRadius={"8px"}
               borderWidth={"1px"}
-              borderColor={isHomeScreen ? "white" : "gray.600"}
+              borderColor={"gray.200"}
             >
               <HStack>
                 <NavLink to={"/profile"}>
-                  <Text textColor={isHomeScreen ? "white" : "gray.600"}>
+                  <Text textColor={"white"}>
                     {truncateAddress(userAddress, 15)}
                   </Text>
                 </NavLink>
                 <CloseButton
                   onClick={disconnectWallet}
                   size="sm"
-                  color={isHomeScreen ? "white" : "gray.600"}
+                  color={"white"}
                 />
               </HStack>
             </Box>
           ) : (
             <Button
-              w={150}
-              h={12}
+              w={120}
+              h={10}
+              fontSize={"md"}
               isLoading={isConnecting}
               onClick={connectWallet}
             >
