@@ -5,7 +5,7 @@ import { AiOutlineAreaChart } from "react-icons/ai";
 import { HiOutlineNewspaper } from "react-icons/hi";
 import { RiCoinsFill } from "react-icons/ri";
 import { FaSwimmingPool, FaHandshake } from "react-icons/fa";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {}
 

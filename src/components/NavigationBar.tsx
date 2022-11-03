@@ -8,8 +8,8 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 import { truncateAddress } from "../helpers/truncateAddress";
 import { useWallet } from "../hooks/useWallet";
@@ -20,13 +20,6 @@ interface NavigationBarProps {}
 export const NavigationBar: React.FC<NavigationBarProps> = () => {
   const [isConnecting, connectWallet, disconnectWallet] = useWallet();
   const userAddress = useUserData((state) => state.address);
-
-  const location = useLocation();
-  const [isHomeScreen, setIsHomescreen] = useState<Boolean>(true);
-
-  useEffect(() => {
-    setIsHomescreen(location.pathname === "/" ? true : false);
-  }, [location]);
 
   return (
     <Box w="100%" h={"80px"} display={"flex"} alignItems={"center"}>
