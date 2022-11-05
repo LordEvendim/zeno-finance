@@ -1,9 +1,14 @@
 import { Box, Flex, Grid, GridItem, Heading, HStack } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
+import { createBastionDataFeed } from "../../modules/bastion/bastionDataFeed";
 
 interface DashboardProps {}
 
 export const Dashboard: React.FC<DashboardProps> = () => {
+  useEffect(() => {
+    createBastionDataFeed();
+  }, []);
+
   return (
     <Box w={"full"} pr={"100px"}>
       <Box h={"10px"} />

@@ -1,7 +1,6 @@
 import { Box, VStack, Text, HStack, Button } from "@chakra-ui/react";
 import React from "react";
 import { RiDashboardFill } from "react-icons/ri";
-import { AiOutlineAreaChart } from "react-icons/ai";
 import { HiOutlineNewspaper } from "react-icons/hi";
 import { RiCoinsFill } from "react-icons/ri";
 import { FaSwimmingPool, FaHandshake } from "react-icons/fa";
@@ -82,17 +81,6 @@ export const Sidebar: React.FC<SidebarProps> = () => {
             <HStack>
               <FaHandshake />
               <Text>Lending positions</Text>
-            </HStack>
-          </Button>
-          <Button
-            variant={"ghost"}
-            fontWeight={"bold"}
-            fontSize={"lg"}
-            onClick={() => navigate("/derivatives")}
-          >
-            <HStack>
-              <AiOutlineAreaChart />
-              <Text>Derivatives</Text>
             </HStack>
           </Button>
         </VStack>
