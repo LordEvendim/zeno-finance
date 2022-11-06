@@ -11,8 +11,8 @@ export const createDexDataFeed = (address: string) => {
   // function to calculate impernament loss
 
   return {
-    getLockedLiquidityValue: async () => {},
-    getImpernamentLossTotal: async () => {},
-    getActivePoolsPositions: async () => {},
+    getLockedLiquidityValue: async () => { },
+    getImpernamentLossTotal: async () => { },
+    getActivePoolsPositions: async () => { },
   };
 };

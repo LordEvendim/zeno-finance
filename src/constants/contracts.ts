@@ -1,6 +1,6 @@
 import { AvailableNetworks } from "./networks";
 
-interface DeployedContracts {}
+interface DeployedContracts { }
 
 export const contractAddresses: {
   [network in AvailableNetworks]: DeployedContracts;
