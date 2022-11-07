@@ -1,4 +1,6 @@
 import {
+  HStack,
+  Image,
   Table,
   TableCaption,
   TableContainer,
@@ -9,6 +11,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import { useStablecoinsPositions } from "../../../stores/useStablecoinsPositions";
 
 interface StablcoinsTableProps {}
 
@@ -17,33 +20,32 @@ export const StablcoinsTable: React.FC<StablcoinsTableProps> = () => {
     <TableContainer>
       <Table variant="simple" colorScheme={"whiteAlpha"}>
         <TableCaption color={"white"} opacity={"0.5"}>
-          Locked liquidity in Bastion lending vaults
+          Value of owned stablecoins
         </TableCaption>
         <Thead opacity={"0.5"}>
           <Tr>
-            <Th color={"white"}>Vault</Th>
-            <Th color={"white"}>Current interest rate</Th>
+            <Th color={"white"}>Coin</Th>
+            <Th color={"white"}>price</Th>
             <Th color={"white"} isNumeric>
-              position value
+              holdings
             </Th>
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>inches</Td>
-            <Td>millimetres (mm)</Td>
-            <Td isNumeric>25.4</Td>
-          </Tr>
-          <Tr>
-            <Td>feet</Td>
-            <Td>centimetres (cm)</Td>
-            <Td isNumeric>30.48</Td>
-          </Tr>
-          <Tr>
-            <Td>yards</Td>
-            <Td>metres (m)</Td>
-            <Td isNumeric>0.91444</Td>
-          </Tr>
+          {useStablecoinsPositions
+            .getState()
+            .stablecoinPositions.map((stablecoin) => (
+              <Tr>
+                <Td>
+                  <HStack>
+                    <Image src={stablecoin.image} />
+                    {stablecoin.name}
+                  </HStack>
+                </Td>
+                <Td>${stablecoin.price}</Td>
+                <Td isNumeric>${stablecoin.value}</Td>
+              </Tr>
+            ))}
         </Tbody>
       </Table>
     </TableContainer>

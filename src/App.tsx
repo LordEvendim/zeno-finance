@@ -9,7 +9,9 @@ import { News } from "./components/pages/News/News";
 import { Stablecoin } from "./components/pages/Stablecoin/Stablecoin";
 import { Sidebar } from "./components/Sidebar";
 
-function App() {
+interface AppProps {}
+
+const App: React.FC<AppProps> = () => {
   return (
     <>
       <NavigationBar />
@@ -26,6 +28,6 @@ function App() {
       </Flex>
     </>
   );
-}
+};
 
 export default App;

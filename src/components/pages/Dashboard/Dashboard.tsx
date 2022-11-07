@@ -12,6 +12,7 @@ import {
   StatNumber,
 } from "@chakra-ui/react";
 import React from "react";
+import { useDataFeeds } from "../../../stores/useDataFeeds";
 import { ChainNewsTable } from "./ChainNewsTable";
 import { PositionsTable } from "./PositionsTable";
 
@@ -44,28 +45,26 @@ export const Dashboard: React.FC<DashboardProps> = () => {
           <StatGroup>
             <Stat>
               <StatLabel>Total value</StatLabel>
-              <StatNumber fontSize={"5xl"}>$120.00</StatNumber>
+              <StatNumber fontSize={"5xl"}>
+                ${useDataFeeds.getState().totalValue}
+              </StatNumber>
               <StatHelpText>Feb 12 - Feb 28</StatHelpText>
             </Stat>
             <Stat>
               <StatLabel>Biggest position</StatLabel>
-              <StatNumber fontSize={"2xl"}>$52.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatNumber fontSize={"3xl"}>$1052.00</StatNumber>
             </Stat>
             <Stat>
-              <StatLabel>Averaged APY</StatLabel>
-              <StatNumber fontSize={"2xl"}>$52.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatLabel>Average APY</StatLabel>
+              <StatNumber fontSize={"3xl"}>23%</StatNumber>
             </Stat>
             <Stat>
-              <StatLabel>Averaged APY</StatLabel>
-              <StatNumber fontSize={"2xl"}>$52.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatLabel>Liquid assets</StatLabel>
+              <StatNumber fontSize={"3xl"}>$52.00</StatNumber>
             </Stat>
             <Stat>
-              <StatLabel>Averaged APY</StatLabel>
-              <StatNumber fontSize={"2xl"}>$52.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatLabel>Tracked activity</StatLabel>
+              <StatNumber fontSize={"3xl"}>12</StatNumber>
             </Stat>
           </StatGroup>
         </GridItem>

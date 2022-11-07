@@ -1,23 +1,28 @@
 import {
   Box,
-  Center,
+  Button,
   Flex,
   Grid,
   GridItem,
   Heading,
   HStack,
+  Input,
   Stat,
   StatGroup,
   StatHelpText,
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
-import React from "react";
-import { StablcoinsTable } from "../Stablecoin/StablcoinsTable";
+import React, { useState } from "react";
+import { useNews } from "../../../stores/useNews";
+import { ActivityTable } from "./ActivityTable";
+import { TrackedAddresesTable } from "./TrackedAddresesTable";
 
 interface NewsProps {}
 
 export const News: React.FC<NewsProps> = () => {
+  const [address, setAddress] = useState<string>("");
+
   return (
     <Box w={"full"} pr={"100px"}>
       <Box h={"10px"} />
@@ -43,19 +48,27 @@ export const News: React.FC<NewsProps> = () => {
         >
           <StatGroup>
             <Stat>
-              <StatLabel>Total value</StatLabel>
-              <StatNumber fontSize={"5xl"}>$120.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatLabel>Tracked activity</StatLabel>
+              <StatNumber fontSize={"5xl"}>
+                {useNews.getState().trackedActivity}
+              </StatNumber>
+              <StatHelpText>Number of transactions in last 24h</StatHelpText>
             </Stat>
             <Stat>
-              <StatLabel>Depeg loss</StatLabel>
-              <StatNumber fontSize={"5xl"}>$52.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatLabel>Transaction value</StatLabel>
+              <StatNumber fontSize={"5xl"}>
+                ${useNews.getState().transactionValue}
+              </StatNumber>
+              <StatHelpText>Transaction value in the last 24h</StatHelpText>
             </Stat>
             <Stat>
-              <StatLabel>Currnet inflation rate</StatLabel>
-              <StatNumber fontSize={"5xl"}>21.20%</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatLabel>Largest balance change</StatLabel>
+              <StatNumber fontSize={"5xl"}>
+                {useNews.getState().largestChange}%
+              </StatNumber>
+              <StatHelpText>
+                Largest balance change from tracked addreses
+              </StatHelpText>
             </Stat>
           </StatGroup>
         </GridItem>
@@ -74,9 +87,9 @@ export const News: React.FC<NewsProps> = () => {
           color={"gray.200"}
         >
           <HStack alignItems={"center"} mb={"20px"}>
-            <Heading size={"md"}>Holdings</Heading>
+            <Heading size={"md"}>Activity</Heading>
           </HStack>
-          <StablcoinsTable />
+          <ActivityTable />
         </GridItem>
         <GridItem
           colSpan={2}
@@ -87,16 +100,33 @@ export const News: React.FC<NewsProps> = () => {
           alignSelf={"flex-start"}
           boxShadow="0px 0px 15px rgba(0,0,0,0.1)"
           bg={"rgba(255,255,255,0)"}
-          h={"300px"}
           backdropFilter={"blur(10px)"}
           borderColor={"rgba(255,255,255,0.2)"}
           borderWidth={"1px"}
           color={"gray.200"}
-          pos={"relative"}
         >
-          <Center pos={"relative"} top={"40%"}>
-            <Heading opacity={"0.2"}>Coming soon</Heading>
-          </Center>
+          <HStack alignItems={"center"} mb={"20px"}>
+            <Heading size={"md"}>Settings</Heading>
+          </HStack>
+          <Flex>
+            <Button
+              variant={"outline"}
+              mr={"20px"}
+              borderColor={"rgba(255,255,255,0.5)"}
+              borderWidth={"1px"}
+              color={"gray.200"}
+              onClick={() => useNews.getState().addAddress(address)}
+            >
+              Add
+            </Button>
+            <Input
+              borderColor={"rgba(255,255,255,0.5)"}
+              borderWidth={"1px"}
+              color={"gray.200"}
+              onChange={(event) => setAddress(event.target.value)}
+            />
+          </Flex>
+          <TrackedAddresesTable />
         </GridItem>
       </Grid>
     </Box>

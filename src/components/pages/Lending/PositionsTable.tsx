@@ -9,10 +9,13 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import { useDataFeeds } from "../../../stores/useDataFeeds";
 
 interface PositionsTableProps {}
 
 export const PositionsTable: React.FC<PositionsTableProps> = () => {
+  const positions = useDataFeeds((state) => state.bastionPositions);
+
   return (
     <TableContainer>
       <Table variant="simple" colorScheme={"whiteAlpha"}>
@@ -29,21 +32,13 @@ export const PositionsTable: React.FC<PositionsTableProps> = () => {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>inches</Td>
-            <Td>millimetres (mm)</Td>
-            <Td isNumeric>25.4</Td>
-          </Tr>
-          <Tr>
-            <Td>feet</Td>
-            <Td>centimetres (cm)</Td>
-            <Td isNumeric>30.48</Td>
-          </Tr>
-          <Tr>
-            <Td>yards</Td>
-            <Td>metres (m)</Td>
-            <Td isNumeric>0.91444</Td>
-          </Tr>
+          {positions.map((position) => (
+            <Tr>
+              <Td>{position.name}</Td>
+              <Td>{position.apy}</Td>
+              <Td isNumeric>{position.value}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

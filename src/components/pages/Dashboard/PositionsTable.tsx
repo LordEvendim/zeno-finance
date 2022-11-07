@@ -9,6 +9,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import { useDataFeeds } from "../../../stores/useDataFeeds";
 
 interface PositionsTableProps {}
 
@@ -17,7 +18,7 @@ export const PositionsTable: React.FC<PositionsTableProps> = () => {
     <TableContainer>
       <Table variant="simple" colorScheme={"whiteAlpha"}>
         <TableCaption color={"white"} opacity={"0.5"}>
-          Locked liquidity in Bastion lending vaults
+          Asset value by category
         </TableCaption>
         <Thead opacity={"0.5"}>
           <Tr>
@@ -30,15 +31,17 @@ export const PositionsTable: React.FC<PositionsTableProps> = () => {
         <Tbody>
           <Tr>
             <Td>Stablecoins</Td>
-            <Td isNumeric>25.4</Td>
+            <Td isNumeric>${useDataFeeds.getState().stablecoinsTotalValue}</Td>
           </Tr>
           <Tr>
             <Td>Lending positions</Td>
-            <Td isNumeric>30.48</Td>
+            <Td isNumeric>
+              ${useDataFeeds.getState().lendingPositionsTotalValue}
+            </Td>
           </Tr>
           <Tr>
             <Td>DEX liquidity</Td>
-            <Td isNumeric>0.91444</Td>
+            <Td isNumeric>${useDataFeeds.getState().dexLiquidityTotalValue}</Td>
           </Tr>
         </Tbody>
       </Table>

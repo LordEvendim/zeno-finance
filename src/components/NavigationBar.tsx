@@ -50,14 +50,11 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
         <Spacer />
         <HStack spacing="64px">
           <Button variant="link" textColor="gray.200">
-            <NavLink to={"/about"}>About</NavLink>
-          </Button>
-          <Button variant="link" textColor="gray.200">
-            <NavLink to={"/contracts"}>Contracts</NavLink>
+            <NavLink to={"/about"}>about</NavLink>
           </Button>
           <Button variant="link">
             <NavLink to={"/dashboard"}>
-              <Text color={"gray.200"}>Dashboard</Text>
+              <Text color={"gray.200"}>Supported assets</Text>
             </NavLink>
           </Button>
 

@@ -17,28 +17,25 @@ export const ChainNewsTable: React.FC<ChainNewsTableProps> = () => {
     <TableContainer>
       <Table variant="simple" colorScheme={"whiteAlpha"}>
         <TableCaption color={"white"} opacity={"0.5"}>
-          Locked liquidity in Bastion lending vaults
+          Most recent activity of tracked addreses
         </TableCaption>
         <Thead opacity={"0.5"}>
           <Tr>
             <Th color={"white"}>Category</Th>
-            <Th color={"white"} isNumeric>
-              position value
-            </Th>
+            <Th color={"white"}>Transaction value</Th>
+            <Th color={"white"}>position value</Th>
           </Tr>
         </Thead>
         <Tbody>
           <Tr>
-            <Td>Stablecoins</Td>
-            <Td isNumeric>25.4</Td>
+            <Td>0x49f2kdfd . . .</Td>
+            <Td>$1003.23</Td>
+            <Td>SWAP</Td>
           </Tr>
           <Tr>
-            <Td>Lending positions</Td>
-            <Td isNumeric>30.48</Td>
-          </Tr>
-          <Tr>
-            <Td>DEX liquidity</Td>
-            <Td isNumeric>0.91444</Td>
+            <Td>0x49f2kdfd . . .</Td>
+            <Td>$1003.23</Td>
+            <Td>MINT</Td>
           </Tr>
         </Tbody>
       </Table>

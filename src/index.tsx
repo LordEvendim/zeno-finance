@@ -3,8 +3,10 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ChakraProvider, theme } from "@chakra-ui/react";
+import { ChakraProvider, createStandaloneToast, theme } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
+
+const { ToastContainer, toast } = createStandaloneToast();
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,6 +16,7 @@ root.render(
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <App />
+        <ToastContainer />
       </ChakraProvider>
     </BrowserRouter>
   </React.StrictMode>

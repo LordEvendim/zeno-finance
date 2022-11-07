@@ -6,14 +6,15 @@ import {
   GridItem,
   Heading,
   HStack,
+  Image,
   Stat,
   StatGroup,
-  StatHelpText,
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
 import React from "react";
-import { StablcoinsTable } from "../Stablecoin/StablcoinsTable";
+import TripolarisLogo from "../../../assets/logos/tripolaris-logo.svg";
+import { DexPositionsTable } from "./DexPositionsTable";
 
 interface DexLiquidityProps {}
 
@@ -45,17 +46,14 @@ export const DexLiquidity: React.FC<DexLiquidityProps> = () => {
             <Stat>
               <StatLabel>Total value</StatLabel>
               <StatNumber fontSize={"5xl"}>$120.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
             </Stat>
             <Stat>
-              <StatLabel>Depeg loss</StatLabel>
-              <StatNumber fontSize={"5xl"}>$52.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatLabel>Average APY</StatLabel>
+              <StatNumber fontSize={"4xl"}>$52.00</StatNumber>
             </Stat>
             <Stat>
-              <StatLabel>Currnet inflation rate</StatLabel>
-              <StatNumber fontSize={"5xl"}>21.20%</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatLabel>Impernament loss</StatLabel>
+              <StatNumber fontSize={"4xl"}>21.20%</StatNumber>
             </Stat>
           </StatGroup>
         </GridItem>
@@ -74,9 +72,10 @@ export const DexLiquidity: React.FC<DexLiquidityProps> = () => {
           color={"gray.200"}
         >
           <HStack alignItems={"center"} mb={"20px"}>
-            <Heading size={"md"}>Holdings</Heading>
+            <Image src={TripolarisLogo} h={"30px"} />
+            <Heading size={"md"}>Tripolaris</Heading>
           </HStack>
-          <StablcoinsTable />
+          <DexPositionsTable />
         </GridItem>
         <GridItem
           colSpan={2}

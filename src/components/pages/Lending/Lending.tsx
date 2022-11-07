@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import BastionLogo from "../../../assets/logos/bastion_logo.png";
+import { useDataFeeds } from "../../../stores/useDataFeeds";
 import { PositionsTable } from "./PositionsTable";
 
 interface LendingProps {}
@@ -46,18 +47,22 @@ export const Lending: React.FC<LendingProps> = () => {
           <StatGroup>
             <Stat>
               <StatLabel>Total value</StatLabel>
-              <StatNumber fontSize={"5xl"}>$120.00</StatNumber>
+              <StatNumber fontSize={"5xl"}>
+                ${useDataFeeds.getState().lendingPositionsTotalValue}
+              </StatNumber>
               <StatHelpText>Feb 12 - Feb 28</StatHelpText>
             </Stat>
             <Stat>
               <StatLabel>Biggest position</StatLabel>
-              <StatNumber fontSize={"5xl"}>$52.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatNumber fontSize={"4xl"}>
+                ${useDataFeeds.getState().biggestLendingPositionValue}
+              </StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Averaged APY</StatLabel>
-              <StatNumber fontSize={"5xl"}>$52.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatNumber fontSize={"4xl"}>
+                {useDataFeeds.getState().averagedLendingAPY}%
+              </StatNumber>
             </Stat>
           </StatGroup>
         </GridItem>

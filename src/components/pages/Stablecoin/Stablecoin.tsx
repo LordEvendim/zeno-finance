@@ -13,6 +13,8 @@ import {
   StatNumber,
 } from "@chakra-ui/react";
 import React from "react";
+import { useDataFeeds } from "../../../stores/useDataFeeds";
+import { useStablecoinsPositions } from "../../../stores/useStablecoinsPositions";
 import { StablcoinsTable } from "./StablcoinsTable";
 
 interface StablecoinProps {}
@@ -44,18 +46,21 @@ export const Stablecoin: React.FC<StablecoinProps> = () => {
           <StatGroup>
             <Stat>
               <StatLabel>Total value</StatLabel>
-              <StatNumber fontSize={"5xl"}>$120.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatNumber fontSize={"5xl"}>
+                ${useStablecoinsPositions.getState().totalValue}
+              </StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Depeg loss</StatLabel>
-              <StatNumber fontSize={"5xl"}>$52.00</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatNumber fontSize={"4xl"}>
+                ${useStablecoinsPositions.getState().depegLoss}
+              </StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Currnet inflation rate</StatLabel>
-              <StatNumber fontSize={"5xl"}>21.20%</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatNumber fontSize={"4xl"}>
+                {useStablecoinsPositions.getState().currentInflationRate}%
+              </StatNumber>
             </Stat>
           </StatGroup>
         </GridItem>
