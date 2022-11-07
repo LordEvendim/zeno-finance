@@ -1,7 +1,6 @@
 import { createStandaloneToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import create from "zustand";
-import { useGlobalToast } from "./useGlobalToast";
 
 interface useNewsStore {
   trackedActivity: string;
@@ -40,6 +39,10 @@ export const useNews = create<useNewsStore>((set, get) => ({
 
     if (!isAddress) {
       return toast({ status: "error", description: "Invalid address", position: "top" });
+    }
+
+    if (get().trackedAddreses.length >= 10) {
+      return toast({ status: "error", description: "Addreses limit reached", position: "top" })
     }
 
     // Remove duplicates
