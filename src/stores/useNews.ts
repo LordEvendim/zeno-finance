@@ -1,21 +1,16 @@
 import { createStandaloneToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import create from "zustand";
+import { AuroraTransactionDetails } from "../modules/aurora-scan/auroraScan";
 
 interface useNewsStore {
   trackedActivity: string;
   transactionValue: string;
   largestChange: string;
-  activity: Activity[];
+  activity: AuroraTransactionDetails[];
   trackedAddreses: TrackedAddress[];
   removeTrackedAddress: (address: string) => void;
   addAddress: (address: string) => void;
-}
-
-interface Activity {
-  address: string;
-  transactionValue: string;
-  action: string;
 }
 
 interface TrackedAddress {
