@@ -9,6 +9,7 @@ interface useStablecoinsPositionsStore {
 
 interface StablecoinPosition {
   name: string;
+  address: string;
   symbol: string;
   image: string;
   value: string;
