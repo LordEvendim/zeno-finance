@@ -3,9 +3,8 @@ import { ethers } from "ethers";
 import cToken from "../../contracts/cToken.json";
 import erc20 from "../../contracts/erc20.json";
 import { useProvider } from "../../stores/useProvider";
+import { useUserData } from "../../stores/useUserData";
 import { getPrice } from "../coingecko/requestTokenPrices";
-
-const target = "0xB6c0C00b3FdcAD0c3994257a7c668b8fEeeF467E";
 
 const createBastionDataFeed = () => {
   const cTokensAddresses: { [key: string]: string } = {
@@ -25,7 +24,7 @@ const createBastionDataFeed = () => {
   const fetchCTokenBalance = async (address: string, tokenName: string) => {
     const contract = new ethers.Contract(address, cToken.abi, provider);
 
-    const result = await contract.balanceOf(target);
+    const result = await contract.balanceOf(useUserData.getState().address);
 
     const formatedResult = ethers.utils.formatUnits(result, 8);
 
@@ -136,6 +135,4 @@ const createBastionDataFeed = () => {
   };
 };
 
-const bastionDataFeed = createBastionDataFeed();
-
-export { bastionDataFeed };
+export const bastionDataFeed = createBastionDataFeed();

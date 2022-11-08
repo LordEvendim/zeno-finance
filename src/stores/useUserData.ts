@@ -11,7 +11,7 @@ interface UserDataStore {
 
 export const useUserData = create<UserDataStore>((set) => ({
   isLogged: false,
-  address: "",
+  address: "0xB6c0C00b3FdcAD0c3994257a7c668b8fEeeF467E",
   balance: "-",
   stableBalance: "-",
   login: (address: string) => set({ address, isLogged: true }),

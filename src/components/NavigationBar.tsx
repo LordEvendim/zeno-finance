@@ -13,6 +13,7 @@ import { NavLink } from "react-router-dom";
 
 import { truncateAddress } from "../helpers/truncateAddress";
 import { useWallet } from "../hooks/useWallet";
+import { useDataFeeds } from "../stores/useDataFeeds";
 import { useUserData } from "../stores/useUserData";
 
 interface NavigationBarProps {}
@@ -91,6 +92,16 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
             </Button>
           )}
         </HStack>
+        <Button
+          m={"10px"}
+          w={120}
+          h={10}
+          fontSize={"md"}
+          isLoading={isConnecting}
+          onClick={() => useDataFeeds.getState().fetchData()}
+        >
+          Trigger
+        </Button>
       </Flex>
     </Box>
   );

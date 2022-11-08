@@ -22,6 +22,9 @@ interface NewsProps {}
 
 export const News: React.FC<NewsProps> = () => {
   const [address, setAddress] = useState<string>("");
+  const largestChange = useNews((state) => state.largestChange);
+  const trackedActivity = useNews((state) => state.trackedActivity);
+  const transactionValue = useNews((state) => state.transactionValue);
 
   return (
     <Box w={"full"} pr={"100px"}>
@@ -49,23 +52,17 @@ export const News: React.FC<NewsProps> = () => {
           <StatGroup>
             <Stat>
               <StatLabel>Tracked activity</StatLabel>
-              <StatNumber fontSize={"5xl"}>
-                {useNews.getState().trackedActivity}
-              </StatNumber>
+              <StatNumber fontSize={"5xl"}>{trackedActivity}</StatNumber>
               <StatHelpText>Number of transactions in last 24h</StatHelpText>
             </Stat>
             <Stat>
               <StatLabel>Transaction value</StatLabel>
-              <StatNumber fontSize={"5xl"}>
-                ${useNews.getState().transactionValue}
-              </StatNumber>
+              <StatNumber fontSize={"5xl"}>${transactionValue}</StatNumber>
               <StatHelpText>Transaction value in the last 24h</StatHelpText>
             </Stat>
             <Stat>
               <StatLabel>Largest balance change</StatLabel>
-              <StatNumber fontSize={"5xl"}>
-                {useNews.getState().largestChange}%
-              </StatNumber>
+              <StatNumber fontSize={"5xl"}>{largestChange}%</StatNumber>
               <StatHelpText>
                 Largest balance change from tracked addreses
               </StatHelpText>
