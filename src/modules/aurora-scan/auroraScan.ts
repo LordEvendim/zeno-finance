@@ -25,30 +25,40 @@ export interface AuroraTransactionDetails {
 
 const createAuroraScanDataFeed = () => {
   const API_KEY = process.env.REACT_APP_AURORA_SCAN_API ?? "";
+  // let averageBlocksPerDay: number | undefined = undefined;
+  let averageBlocksPerDay = 71786;
+
+  const getBlockNumberDayAgo = async (): Promise<number> => {
+    const dayAgo = Math.round((Date.now() - 1000 * 60 * 60 * 24) / 1000);
+    const result = await getBlockNumberByTimestamp(dayAgo);
+    return result;
+  };
+
+  const getBlockNumberByTimestamp = async (
+    timestamp: number
+  ): Promise<number> => {
+    try {
+      const result = await axios.get(
+        `https://api.aurorascan.dev/api?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before&apikey=${API_KEY}`
+      );
+      const blockNumberByTimestamp = result.data.result;
+      console.log("blockNumberByTimestamp");
+      console.log(blockNumberByTimestamp);
+
+      if (!result.data) {
+        throw new Error("Cannot fetch data from Aurorascan");
+      }
+
+      return result.data.result;
+    } catch (error: any) {
+      console.log(error);
+      throw error;
+    }
+  };
 
   return {
-    getBlockNumberDayAgo: async (): Promise<number> => {
-      try {
-        // get block number 24h ago
-        const dayAgo = Math.round((Date.now() - 1000 * 60 * 60 * 24) / 1000);
-
-        const result = await axios.get(
-          `https://api.aurorascan.dev/api?module=block&action=getblocknobytime&timestamp=${dayAgo}&closest=before&apikey=${API_KEY}`
-        );
-        const blockNumberDayAgo = result.data.result;
-        console.log("blockNumberDayAgo");
-        console.log(blockNumberDayAgo);
-
-        if (!result.data) {
-          throw new Error("Cannot fetch data from Aurorascan");
-        }
-
-        return result.data.result;
-      } catch (error: any) {
-        console.log(error);
-        throw error;
-      }
-    },
+    getBlockNumberDayAgo,
+    getBlockNumberByTimestamp,
     getBalances: async (addreses: string[]) => {
       try {
         // get balances of tracked accounts
@@ -106,6 +116,24 @@ const createAuroraScanDataFeed = () => {
         }
 
         return result.data.result as AuroraTransactionDetails[];
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+    getBlocksPerDay: async (): Promise<number> => {
+      try {
+        if (averageBlocksPerDay) return averageBlocksPerDay;
+
+        const blocksNumberDayAgo = await getBlockNumberDayAgo();
+        const currentBlockNumber = await getBlockNumberByTimestamp(
+          Math.round(Date.now() / 1000)
+        );
+
+        console.log(blocksNumberDayAgo);
+        console.log(currentBlockNumber);
+
+        return currentBlockNumber - blocksNumberDayAgo;
       } catch (error) {
         console.log(error);
         throw error;

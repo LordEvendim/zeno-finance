@@ -35,7 +35,7 @@ export const PositionsTable: React.FC<PositionsTableProps> = () => {
           {positions.map((position) => (
             <Tr>
               <Td>{position.name}</Td>
-              <Td>{position.apy}</Td>
+              <Td>{position.apy} %</Td>
               <Td isNumeric>{position.value} $</Td>
             </Tr>
           ))}

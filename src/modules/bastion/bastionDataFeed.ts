@@ -5,6 +5,7 @@ import erc20 from "../../contracts/erc20.json";
 import { BastionPosition, useBastion } from "../../stores/useBastion";
 import { useProvider } from "../../stores/useProvider";
 import { useUserData } from "../../stores/useUserData";
+import { auroraScanDataFeed } from "../aurora-scan/auroraScan";
 import { requestPrice } from "../coingecko/requestTokenPrices";
 
 type CTokensDetails = { [name: string]: CTokenDetails };
@@ -46,11 +47,12 @@ const createBastionDataFeed = () => {
 
   const provider = useProvider.getState().provider;
 
-  const fetchCTokenBalance = async (
-    address: string,
-    tokenName: string
-  ): Promise<string> => {
-    const contract = new ethers.Contract(address, cToken.abi, provider);
+  const fetchCTokenBalance = async (tokenName: string): Promise<string> => {
+    const contract = new ethers.Contract(
+      cTokensDetails[tokenName].address,
+      cToken.abi,
+      provider
+    );
 
     const result = await contract.balanceOf(useUserData.getState().address);
 
@@ -119,36 +121,95 @@ const createBastionDataFeed = () => {
     return valueUSD;
   };
 
-  const fetchCTokenAPY = async () => {};
+  const fetchCTokenAPY = async (tokenName: string) => {
+    const ethMantissa = 1e18;
+    // const blocksPerDay = 7200; // 15 seconds per block
+    const blocksPerDay = await auroraScanDataFeed.getBlocksPerDay();
+    console.log("Blocks per day -> " + blocksPerDay);
+
+    const daysPerYear = 365;
+
+    const contract = new ethers.Contract(
+      cTokensDetails[tokenName].address,
+      cToken.abi,
+      provider
+    );
+    const supplyRatePerBlock = await contract.supplyRatePerBlock();
+    const borrowRatePerBlock = await contract.borrowRatePerBlock();
+    const supplyApy =
+      (Math.pow(
+        (supplyRatePerBlock / ethMantissa) * blocksPerDay + 1,
+        daysPerYear
+      ) -
+        1) *
+      100;
+    const borrowApy =
+      (Math.pow(
+        (borrowRatePerBlock / ethMantissa) * blocksPerDay + 1,
+        daysPerYear
+      ) -
+        1) *
+      100;
+    console.log(`Supply APY for ${tokenName} ${supplyApy} %`);
+    console.log(`Borrow APY for ${tokenName} ${borrowApy} %`);
+
+    return supplyApy.toString();
+  };
 
   const fetchCTokensBalances = async () => {};
 
   const fetchCTokensValues = async () => {
     const cTokensNames = Object.keys(cTokensDetails);
     let totalValue = new Decimal("0");
+    let biggestPosition = new Decimal("0");
+
     const positions: BastionPosition[] = [];
 
     for (let i = 0; i < cTokensNames.length; i++) {
-      const balance = await fetchCTokenBalance(
-        cTokensDetails[cTokensNames[i]].address,
-        cTokensNames[i]
-      );
+      const balance = await fetchCTokenBalance(cTokensNames[i]);
       console.log(`Balance of ${cTokensNames[i]} is ${balance}`);
+
+      if (balance === "0.0") continue;
 
       const usdValue = await fetchCtokenValue(cTokensNames[i], balance);
 
       console.log(`USD value of ${cTokensNames[i]} is ${usdValue}`);
       totalValue = totalValue.add(new Decimal(usdValue));
 
+      let apy = "0";
+      if (usdValue !== "0") {
+        apy = new Decimal(await fetchCTokenAPY(cTokensNames[i])).toPrecision(3);
+      } else {
+        apy = "-";
+      }
+
       positions.push({
-        apy: "0",
+        apy,
         name: cTokensNames[i],
         value: usdValue,
       });
+
+      // set the biggest position
+      if (new Decimal(usdValue).gt(biggestPosition)) {
+        biggestPosition = new Decimal(usdValue);
+      }
     }
+
+    let averageQuotient = new Decimal("0");
+    positions.forEach((position) => {
+      averageQuotient = averageQuotient
+        .add(new Decimal(position.value))
+        .mul(new Decimal(position.apy));
+    });
+
+    const averageAPY = averageQuotient.div(totalValue);
 
     useBastion.setState({ totalValue: totalValue.toPrecision(5) });
     useBastion.setState({ positions });
+    useBastion.setState({ averageAPY: averageAPY.toPrecision(3) });
+    useBastion.setState({
+      biggestPositionValue: biggestPosition.toPrecision(5),
+    });
   };
 
   const fetchData = async () => {
