@@ -5,17 +5,7 @@ interface useDataFeedsStore {
   totalValue: string;
   stablecoinsTotalValue: string;
   dexLiquidityTotalValue: string;
-  lendingPositionsTotalValue: string;
-  biggestLendingPositionValue: string;
-  averagedLendingAPY: string;
-  bastionPositions: BastionPosition[];
   fetchData: () => void;
-}
-
-interface BastionPosition {
-  name: string;
-  value: string;
-  apy: string;
 }
 
 export const useDataFeeds = create<useDataFeedsStore>((set) => ({
@@ -29,9 +19,8 @@ export const useDataFeeds = create<useDataFeedsStore>((set) => ({
   fetchData: async () => {
     try {
       await newsDataFeed.getNewsData();
-
     } catch (error: any) {
       console.log(error);
     }
-  }
+  },
 }));

@@ -2,49 +2,75 @@ import Decimal from "decimal.js";
 import { ethers } from "ethers";
 import cToken from "../../contracts/cToken.json";
 import erc20 from "../../contracts/erc20.json";
+import { BastionPosition, useBastion } from "../../stores/useBastion";
 import { useProvider } from "../../stores/useProvider";
 import { useUserData } from "../../stores/useUserData";
-import { getPrice } from "../coingecko/requestTokenPrices";
+import { requestPrice } from "../coingecko/requestTokenPrices";
+
+type CTokensDetails = { [name: string]: CTokenDetails };
+
+interface CTokenDetails {
+  address: string;
+  underlyingCoinGeckoId: string;
+}
+
+const cTokensDetails: CTokensDetails = {
+  cWBTC: {
+    address: "0xfa786baC375D8806185555149235AcDb182C033b",
+    underlyingCoinGeckoId: "bitcoin",
+  },
+  cETH: {
+    address: "0x4E8fE8fd314cFC09BDb0942c5adCC37431abDCD0",
+    underlyingCoinGeckoId: "ethereum",
+  },
+  cNEAR: {
+    address: "0x8C14ea853321028a7bb5E4FB0d0147F183d3B677",
+    underlyingCoinGeckoId: "near",
+  },
+  cUSDC: {
+    address: "0xe5308dc623101508952948b141fD9eaBd3337D99",
+    underlyingCoinGeckoId: "usd-coin",
+  },
+  cUSDT: {
+    address: "0x845E15A441CFC1871B7AC610b0E922019BaD9826",
+    underlyingCoinGeckoId: "tether",
+  },
+  cBSTN: {
+    address: "0x08Ac1236ae3982EC9463EfE10F0F320d9F5A9A4b",
+    underlyingCoinGeckoId: "bastion-protocol",
+  },
+};
 
 const createBastionDataFeed = () => {
-  const cTokensAddresses: { [key: string]: string } = {
-    cWBTC: "0xfa786baC375D8806185555149235AcDb182C033b",
-    cETH: "0x4E8fE8fd314cFC09BDb0942c5adCC37431abDCD0",
-    cNEAR: "0x8C14ea853321028a7bb5E4FB0d0147F183d3B677",
-    cUSDC: "0xe5308dc623101508952948b141fD9eaBd3337D99",
-    cUSDT: "0x845E15A441CFC1871B7AC610b0E922019BaD9826",
-    cBSTN: "0x08Ac1236ae3982EC9463EfE10F0F320d9F5A9A4b",
-  };
   const tokenBalances: { [key: string]: string } = {};
-  const tokenValues: { [key: string]: string } = {};
-  let totalValue = "";
 
   const provider = useProvider.getState().provider;
 
-  const fetchCTokenBalance = async (address: string, tokenName: string) => {
+  const fetchCTokenBalance = async (
+    address: string,
+    tokenName: string
+  ): Promise<string> => {
     const contract = new ethers.Contract(address, cToken.abi, provider);
 
     const result = await contract.balanceOf(useUserData.getState().address);
 
     const formatedResult = ethers.utils.formatUnits(result, 8);
 
-    console.log(`${tokenName} balance : ${result}`);
     tokenBalances[tokenName] = result.toString();
 
     return formatedResult;
   };
 
-  const fetchCtokenValue = async (tokenName: string): Promise<string> => {
+  const fetchCtokenValue = async (
+    tokenName: string,
+    amount: string
+  ): Promise<string> => {
     // Do not fetch prices for tokens that user do not hold
-    if (
-      tokenBalances[tokenName] === undefined ||
-      tokenBalances[tokenName] === "0"
-    )
-      return "0";
+    if (amount === "0") return "0";
 
     // instantiate cToken contract
     const cTokenContract = new ethers.Contract(
-      cTokensAddresses[tokenName],
+      cTokensDetails[tokenName].address,
       cToken.abi,
       provider
     );
@@ -78,56 +104,53 @@ const createBastionDataFeed = () => {
       new Decimal(tokenBalances[tokenName])
     );
 
-    // 
-    const valueUSD = new Decimal(getPrice("btc"))
+    // TODO: support fetching other values
+    const price = await requestPrice(
+      cTokensDetails[tokenName].underlyingCoinGeckoId
+    );
+    const valueUSD = new Decimal(price)
       .mul(value.div(new Decimal(10).pow(cTokenDecimals)))
       .round()
       .toString();
 
-    console.log(`${tokenName} is worth ${valueUSD} USD`);
-
-    tokenValues[tokenName] = valueUSD;
-
     return valueUSD;
   };
 
-  const fetchCtokensBalances = async () => {
-    const pendingPromises: Array<Promise<any>> = [];
-    Object.keys(cTokensAddresses).forEach((token: any) => {
-      pendingPromises.push(
-        fetchCTokenBalance(cTokensAddresses[token] as any, token)
+  const fetchCTokenAPY = async () => {};
+
+  const fetchCTokensBalances = async () => {};
+
+  const fetchCTokensValues = async () => {
+    const cTokensNames = Object.keys(cTokensDetails);
+    let totalValue = new Decimal("0");
+    const positions: BastionPosition[] = [];
+
+    for (let i = 0; i < cTokensNames.length; i++) {
+      const balance = await fetchCTokenBalance(
+        cTokensDetails[cTokensNames[i]].address,
+        cTokensNames[i]
       );
-    });
+      console.log(`Balance of ${cTokensNames[i]} is ${balance}`);
 
-    await Promise.all(pendingPromises);
-  };
+      const usdValue = await fetchCtokenValue(cTokensNames[i], balance);
 
-  const fetchCtokensValues = async () => {
-    const pendingPromises: Array<Promise<any>> = [];
-    Object.keys(cTokensAddresses).forEach((token: any) => {
-      pendingPromises.push(fetchCtokenValue(token));
-    });
+      console.log(`USD value of ${cTokensNames[i]} is ${usdValue}`);
+      totalValue = totalValue.add(new Decimal(usdValue));
 
-    const values = await Promise.all(pendingPromises);
+      positions.push({
+        apy: "0",
+        name: cTokensNames[i],
+        value: usdValue,
+      });
+    }
 
-    let total = new Decimal("0");
-    values.forEach(value => {
-      total = total.add(value);
-    });
-
-    totalValue = total.toString();
-
-    console.log(`Total toknes value: ${totalValue} USD`);
+    useBastion.setState({ totalValue: totalValue.toPrecision(5) });
+    useBastion.setState({ positions });
   };
 
   const fetchData = async () => {
-    await fetchCtokensBalances();
-    await fetchCtokensValues();
-
-    return {
-      tokenBalances,
-      tokenValues
-    }
+    await fetchCTokensBalances();
+    await fetchCTokensValues();
   };
 
   return {

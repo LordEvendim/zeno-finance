@@ -5,7 +5,7 @@ import {
   auroraScanDataFeed,
   AuroraTransactionDetails,
 } from "../aurora-scan/auroraScan";
-import { getPrice, requestPrices } from "../coingecko/requestTokenPrices";
+import { requestPrice } from "../coingecko/requestTokenPrices";
 
 const createNewsDataFeed = () => {
   const aurora = auroraScanDataFeed;
@@ -60,8 +60,7 @@ const createNewsDataFeed = () => {
         const formatedTotalValue = totalValue.div(new Decimal("10").pow("18"));
 
         // convert to USD
-        await requestPrices();
-        const ethPrice = getPrice("ethereum");
+        const ethPrice = await requestPrice("ethereum");
 
         const formatedTotalValueUSD = formatedTotalValue
           .mul(ethPrice)
