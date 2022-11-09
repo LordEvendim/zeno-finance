@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { Routes, Route } from "react-router";
 import { NavigationBar } from "./components/NavigationBar";
 import { Dashboard } from "./components/pages/Dashboard/Dashboard";
@@ -8,10 +9,17 @@ import { Mainpage } from "./components/pages/Mainpage";
 import { News } from "./components/pages/News/News";
 import { Stablecoin } from "./components/pages/Stablecoin/Stablecoin";
 import { Sidebar } from "./components/Sidebar";
+import { useRefresh } from "./stores/useRefresh";
 
 interface AppProps {}
 
 const App: React.FC<AppProps> = () => {
+  // const refresh = useRefresh((state) => state.refresh);
+
+  // useEffect(() => {
+  //   refresh();
+  // }, [refresh]);
+
   return (
     <>
       <NavigationBar />

@@ -66,7 +66,7 @@ const createBastionDataFeed = () => {
     amount: string
   ): Promise<string> => {
     // Do not fetch prices for tokens that user do not hold
-    if (amount === "0") return "0";
+    if (amount === "0.0" || amount === undefined) return "0";
 
     // instantiate cToken contract
     const cTokenContract = new ethers.Contract(
@@ -105,6 +105,9 @@ const createBastionDataFeed = () => {
     );
 
     // TODO: support fetching other values
+    console.log(tokenName);
+    console.log(cTokensDetails[tokenName]);
+
     const price = await requestPrice(
       cTokensDetails[tokenName].underlyingCoinGeckoId
     );

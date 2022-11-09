@@ -15,12 +15,16 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import BastionLogo from "../../../assets/logos/bastion_logo.png";
-import { useDataFeeds } from "../../../stores/useDataFeeds";
+import { useBastion } from "../../../stores/useBastion";
 import { PositionsTable } from "./PositionsTable";
 
 interface LendingProps {}
 
 export const Lending: React.FC<LendingProps> = () => {
+  const totalValue = useBastion((state) => state.totalValue);
+  const biggetPosition = useBastion((state) => state.biggestPositionValue);
+  const averageAPY = useBastion((state) => state.averageAPY);
+
   return (
     <Box w={"full"} pr={"100px"}>
       <Box h={"10px"} />
@@ -47,22 +51,16 @@ export const Lending: React.FC<LendingProps> = () => {
           <StatGroup>
             <Stat>
               <StatLabel>Total value</StatLabel>
-              <StatNumber fontSize={"5xl"}>
-                ${useDataFeeds.getState().lendingPositionsTotalValue}
-              </StatNumber>
+              <StatNumber fontSize={"5xl"}>${totalValue}</StatNumber>
               <StatHelpText>Feb 12 - Feb 28</StatHelpText>
             </Stat>
             <Stat>
               <StatLabel>Biggest position</StatLabel>
-              <StatNumber fontSize={"4xl"}>
-                ${useDataFeeds.getState().biggestLendingPositionValue}
-              </StatNumber>
+              <StatNumber fontSize={"4xl"}>${biggetPosition}</StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Averaged APY</StatLabel>
-              <StatNumber fontSize={"4xl"}>
-                {useDataFeeds.getState().averagedLendingAPY}%
-              </StatNumber>
+              <StatNumber fontSize={"4xl"}>{averageAPY}%</StatNumber>
             </Stat>
           </StatGroup>
         </GridItem>

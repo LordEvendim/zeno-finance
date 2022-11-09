@@ -24,14 +24,14 @@ export const requestPrices = async () => {
 export const requestPrice = async (tokenName: string) => {
   try {
     // if the price was fetch less then 10 minutes ago return that catched price
-    if (prices[tokenName].price !== undefined) {
+    if (prices[tokenName] !== undefined) {
       if (Date.now() - prices[tokenName].requestTime < 1000 * 60 * 10) {
         return prices[tokenName].price;
       }
     }
 
     const result = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${tokenName}&precision=full`
+      `https://api.coingecko.com/api/v3/simple/price?ids=${tokenName}&vs_currencies=usd&precision=full`
     );
 
     const price = result.data[tokenName].usd;

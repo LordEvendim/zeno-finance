@@ -9,12 +9,12 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
-import { useDataFeeds } from "../../../stores/useDataFeeds";
+import { useBastion } from "../../../stores/useBastion";
 
 interface PositionsTableProps {}
 
 export const PositionsTable: React.FC<PositionsTableProps> = () => {
-  const positions = useDataFeeds((state) => state.bastionPositions);
+  const positions = useBastion((state) => state.positions);
 
   return (
     <TableContainer>
@@ -36,7 +36,7 @@ export const PositionsTable: React.FC<PositionsTableProps> = () => {
             <Tr>
               <Td>{position.name}</Td>
               <Td>{position.apy}</Td>
-              <Td isNumeric>{position.value}</Td>
+              <Td isNumeric>{position.value} $</Td>
             </Tr>
           ))}
         </Tbody>

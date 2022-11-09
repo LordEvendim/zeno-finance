@@ -1,15 +1,41 @@
-import { Box, VStack, Text, HStack, Button } from "@chakra-ui/react";
-import React from "react";
+import { Box, VStack, Text, HStack, Button, Center } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { RiDashboardFill } from "react-icons/ri";
 import { HiOutlineNewspaper } from "react-icons/hi";
 import { RiCoinsFill } from "react-icons/ri";
 import { FaSwimmingPool, FaHandshake } from "react-icons/fa";
+import { MdRefresh } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import Countdown, { CountdownApi } from "react-countdown";
+import { useRefresh } from "../stores/useRefresh";
 
 interface SidebarProps {}
 
 export const Sidebar: React.FC<SidebarProps> = () => {
   let navigate = useNavigate();
+  const nextRefresh = useRefresh((state) => state.nextRefreshTime);
+  const isReady = useRefresh((state) => state.isReady);
+  const [isReadyToRefresh, setReadyToRefresh] = useState(true);
+
+  const refresh = useRefresh((state) => state.refresh);
+  const [countdownApi, setCountdownApi] = useState<CountdownApi>();
+
+  useEffect(() => {
+    if (countdownApi) countdownApi.start();
+  }, [nextRefresh, countdownApi]);
+
+  const setRef = (countdown: Countdown | null): void => {
+    if (countdown) {
+      console.log(countdown.getApi());
+      setCountdownApi(countdown.getApi());
+    }
+  };
+
+  const updateButtonStatus = () => {
+    console.log(isReady());
+
+    setReadyToRefresh(isReady());
+  };
 
   return (
     <Box>
@@ -85,6 +111,25 @@ export const Sidebar: React.FC<SidebarProps> = () => {
           </Button>
         </VStack>
       </Box>
+      <Center mt={"30px"} fontSize={"2xl"} color={"gray.200"}>
+        <Button
+          variant={"outline"}
+          mr={"20px"}
+          disabled={!isReadyToRefresh}
+          onClick={() => refresh()}
+        >
+          <MdRefresh />
+        </Button>
+        {
+          <Countdown
+            date={nextRefresh}
+            onStart={() => updateButtonStatus()}
+            onComplete={() => updateButtonStatus()}
+            ref={setRef}
+            daysInHours
+          />
+        }
+      </Center>
     </Box>
   );
 };
