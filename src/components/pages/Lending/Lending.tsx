@@ -8,6 +8,7 @@ import {
   HStack,
   Image,
   Stat,
+  StatArrow,
   StatGroup,
   StatHelpText,
   StatLabel,
@@ -22,8 +23,12 @@ interface LendingProps {}
 
 export const Lending: React.FC<LendingProps> = () => {
   const totalValue = useBastion((state) => state.totalValue);
-  const biggetPosition = useBastion((state) => state.biggestPositionValue);
+  const biggestPositionValue = useBastion(
+    (state) => state.biggestPositionValue
+  );
+  const biggestPositionName = useBastion((state) => state.biggestPositionName);
   const averageAPY = useBastion((state) => state.averageAPY);
+  const yearlyProfit = useBastion((state) => state.yearlyProfit);
 
   return (
     <Box w={"full"} pr={"100px"}>
@@ -52,15 +57,20 @@ export const Lending: React.FC<LendingProps> = () => {
             <Stat>
               <StatLabel>Total value</StatLabel>
               <StatNumber fontSize={"5xl"}>${totalValue}</StatNumber>
-              <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+              <StatHelpText>*based on prices from Coingecko</StatHelpText>
             </Stat>
             <Stat>
               <StatLabel>Biggest position</StatLabel>
-              <StatNumber fontSize={"4xl"}>${biggetPosition}</StatNumber>
+              <StatNumber fontSize={"4xl"}>${biggestPositionValue}</StatNumber>
+              <StatHelpText>{biggestPositionName}</StatHelpText>
             </Stat>
             <Stat>
               <StatLabel>Averaged APY</StatLabel>
               <StatNumber fontSize={"4xl"}>{averageAPY}%</StatNumber>
+              <StatHelpText>
+                <StatArrow type="increase" />
+                Est. yearly profit: {yearlyProfit} $
+              </StatHelpText>
             </Stat>
           </StatGroup>
         </GridItem>

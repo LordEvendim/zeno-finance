@@ -156,12 +156,11 @@ const createBastionDataFeed = () => {
     return supplyApy.toString();
   };
 
-  const fetchCTokensBalances = async () => {};
-
   const fetchCTokensValues = async () => {
     const cTokensNames = Object.keys(cTokensDetails);
     let totalValue = new Decimal("0");
     let biggestPosition = new Decimal("0");
+    let biggestPositionName = "";
 
     const positions: BastionPosition[] = [];
 
@@ -192,6 +191,7 @@ const createBastionDataFeed = () => {
       // set the biggest position
       if (new Decimal(usdValue).gt(biggestPosition)) {
         biggestPosition = new Decimal(usdValue);
+        biggestPositionName = cTokensNames[i];
       }
     }
 
@@ -210,10 +210,15 @@ const createBastionDataFeed = () => {
     useBastion.setState({
       biggestPositionValue: biggestPosition.toPrecision(5),
     });
+    useBastion.setState({
+      yearlyProfit: totalValue.mul(averageAPY).toPrecision(3),
+    });
+    useBastion.setState({
+      biggestPositionName: biggestPositionName,
+    });
   };
 
   const fetchData = async () => {
-    await fetchCTokensBalances();
     await fetchCTokensValues();
   };
 
