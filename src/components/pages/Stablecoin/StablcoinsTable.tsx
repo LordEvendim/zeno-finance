@@ -16,6 +16,10 @@ import { useStablecoinsPositions } from "../../../stores/useStablecoinsPositions
 interface StablcoinsTableProps {}
 
 export const StablcoinsTable: React.FC<StablcoinsTableProps> = () => {
+  const stablecoinPositions = useStablecoinsPositions(
+    (state) => state.stablecoinPositions
+  );
+
   return (
     <TableContainer>
       <Table variant="simple" colorScheme={"whiteAlpha"}>
@@ -32,20 +36,18 @@ export const StablcoinsTable: React.FC<StablcoinsTableProps> = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {useStablecoinsPositions
-            .getState()
-            .stablecoinPositions.map((stablecoin) => (
-              <Tr>
-                <Td>
-                  <HStack>
-                    <Image src={stablecoin.image} />
-                    {stablecoin.name}
-                  </HStack>
-                </Td>
-                <Td>${stablecoin.price}</Td>
-                <Td isNumeric>${stablecoin.value}</Td>
-              </Tr>
-            ))}
+          {stablecoinPositions.map((stablecoin) => (
+            <Tr>
+              <Td>
+                <HStack>
+                  <Image height={"20px"} src={stablecoin.image} />
+                  {stablecoin.name}
+                </HStack>
+              </Td>
+              <Td>${stablecoin.price}</Td>
+              <Td isNumeric>${stablecoin.value}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

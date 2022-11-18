@@ -8,18 +8,22 @@ import {
   HStack,
   Stat,
   StatGroup,
-  StatHelpText,
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
 import React from "react";
-import { useDataFeeds } from "../../../stores/useDataFeeds";
 import { useStablecoinsPositions } from "../../../stores/useStablecoinsPositions";
 import { StablcoinsTable } from "./StablcoinsTable";
 
 interface StablecoinProps {}
 
 export const Stablecoin: React.FC<StablecoinProps> = () => {
+  const totalvalue = useStablecoinsPositions((state) => state.totalValue);
+  const depegloss = useStablecoinsPositions((state) => state.depegLoss);
+  const inflationRate = useStablecoinsPositions(
+    (state) => state.currentInflationRate
+  );
+
   return (
     <Box w={"full"} pr={"100px"}>
       <Box h={"10px"} />
@@ -46,21 +50,15 @@ export const Stablecoin: React.FC<StablecoinProps> = () => {
           <StatGroup>
             <Stat>
               <StatLabel>Total value</StatLabel>
-              <StatNumber fontSize={"5xl"}>
-                ${useStablecoinsPositions.getState().totalValue}
-              </StatNumber>
+              <StatNumber fontSize={"5xl"}>${totalvalue}</StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Depeg loss</StatLabel>
-              <StatNumber fontSize={"4xl"}>
-                ${useStablecoinsPositions.getState().depegLoss}
-              </StatNumber>
+              <StatNumber fontSize={"4xl"}>${depegloss}</StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Currnet inflation rate</StatLabel>
-              <StatNumber fontSize={"4xl"}>
-                {useStablecoinsPositions.getState().currentInflationRate}%
-              </StatNumber>
+              <StatNumber fontSize={"4xl"}>{inflationRate}%</StatNumber>
             </Stat>
           </StatGroup>
         </GridItem>
