@@ -26,8 +26,7 @@ const App: React.FC<AppProps> = () => {
       <Flex flexDir={"row"} alignItems={"flex-start"}>
         <Sidebar />
         <Routes>
-          <Route path="/" element={<Mainpage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/lending" element={<Lending />} />
           <Route path="/stablecoins" element={<Stablecoin />} />
           <Route path="/news" element={<News />} />

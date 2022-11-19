@@ -26,14 +26,13 @@ export const Sidebar: React.FC<SidebarProps> = () => {
 
   const setRef = (countdown: Countdown | null): void => {
     if (countdown) {
-      console.log(countdown.getApi());
+      // console.log(countdown.getApi());
       setCountdownApi(countdown.getApi());
     }
   };
 
   const updateButtonStatus = () => {
-    console.log(isReady());
-
+    // console.log(isReady());
     setReadyToRefresh(isReady());
   };
 

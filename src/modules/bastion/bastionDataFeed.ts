@@ -8,7 +8,7 @@ import { useUserData } from "../../stores/useUserData";
 import { auroraScanDataFeed } from "../aurora-scan/auroraScan";
 import { requestPrice } from "../coingecko/requestTokenPrices";
 
-type CTokensDetails = { [name: string]: CTokenDetails };
+type CTokensDetails = Record<string, CTokenDetails>;
 
 interface CTokenDetails {
   address: string;
@@ -43,7 +43,7 @@ const cTokensDetails: CTokensDetails = {
 };
 
 const createBastionDataFeed = () => {
-  const tokenBalances: { [key: string]: string } = {};
+  const tokenBalances: Record<string, string> = {};
 
   const provider = useProvider.getState().provider;
 
