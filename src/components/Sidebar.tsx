@@ -32,7 +32,6 @@ export const Sidebar: React.FC<SidebarProps> = () => {
   };
 
   const updateButtonStatus = () => {
-    // console.log(isReady());
     setReadyToRefresh(isReady());
   };
 
@@ -57,11 +56,22 @@ export const Sidebar: React.FC<SidebarProps> = () => {
             variant={"ghost"}
             fontWeight={"bold"}
             fontSize={"lg"}
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/")}
           >
             <HStack>
               <RiDashboardFill />
               <Text>Dashboard</Text>
+            </HStack>
+          </Button>
+          <Button
+            variant={"ghost"}
+            fontWeight={"bold"}
+            fontSize={"lg"}
+            onClick={() => navigate("/dex-liquidity")}
+          >
+            <HStack>
+              <FaSwimmingPool />
+              <Text>DEX liquidity</Text>
             </HStack>
           </Button>
           <Button
@@ -86,17 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
               <Text>Stablecoins</Text>
             </HStack>
           </Button>
-          <Button
-            variant={"ghost"}
-            fontWeight={"bold"}
-            fontSize={"lg"}
-            onClick={() => navigate("/dex-liquidity")}
-          >
-            <HStack>
-              <FaSwimmingPool />
-              <Text>DEX liquidity</Text>
-            </HStack>
-          </Button>
+
           <Button
             variant={"ghost"}
             fontWeight={"bold"}

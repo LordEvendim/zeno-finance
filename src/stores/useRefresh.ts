@@ -16,8 +16,8 @@ export const useRefresh = create<RefreshStore>((set, get) => ({
     console.log("refreshing");
 
     console.log("Fetching bastion data feed");
-    // bastionDataFeed.fetchData();
-    // stablecoinDataFeed.getStablecoinData();
+    bastionDataFeed.fetchData();
+    stablecoinDataFeed.getStablecoinData();
     dexDataFeed.getData();
 
     set({ nextRefreshTime: Date.now() + 1000 * 60 * 1 });

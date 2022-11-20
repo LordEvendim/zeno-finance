@@ -16,6 +16,7 @@ interface StablecoinDetails {
   coingeckoId: string;
   address: string;
   image: string;
+  decimals: number;
 }
 
 const createStablecoinDataFeed = () => {
@@ -33,6 +34,7 @@ const createStablecoinDataFeed = () => {
       coingeckoId: "tether",
       image: USDTLogo,
       address: "0x4988a896b1227218e4a686fde5eabdcabd91571f",
+      decimals: 6,
     },
     {
       name: "USDC",
@@ -40,6 +42,7 @@ const createStablecoinDataFeed = () => {
       coingeckoId: "usd-coin",
       image: USDCLogo,
       address: "0xb12bfca5a55806aaf64e99521918a4bf0fc40802",
+      decimals: 6,
     },
     {
       name: "DAI",
@@ -47,6 +50,7 @@ const createStablecoinDataFeed = () => {
       coingeckoId: "dai",
       image: DaiLogo,
       address: "0xe3520349f477a5f6eb06107066048508498a291b",
+      decimals: 18,
     },
     {
       name: "Frax",
@@ -54,6 +58,7 @@ const createStablecoinDataFeed = () => {
       coingeckoId: "frax",
       image: FraxLogo,
       address: "0xda2585430fef327ad8ee44af8f1f989a2a91a3d2",
+      decimals: 18,
     },
   ];
 
@@ -78,28 +83,37 @@ const createStablecoinDataFeed = () => {
       const resolvedBalances = await Promise.all(pendingBalances);
       const resolvedPrices = await Promise.all(pendingPrices);
 
-      const depegloss = new Decimal("0");
-      const totalValue = new Decimal("0");
+      let depegloss = new Decimal("0");
+      let totalValue = new Decimal("0");
 
       const stablecoinPositions = stablecoins.map((coin, index) => {
         let resolvedPrice: Decimal = new Decimal(resolvedPrices[index]);
         console.log(resolvedBalances[index]);
         let balance: Decimal = new Decimal(resolvedBalances[index].toString());
 
-        depegloss.add(new Decimal("1").sub(resolvedPrice).mul(balance));
-        totalValue.add(resolvedPrice.mul(balance));
+        depegloss = depegloss.add(
+          new Decimal("1")
+            .sub(resolvedPrice)
+            .mul(balance)
+            .div(new Decimal(10).pow(coin.decimals))
+        );
+        totalValue = totalValue.add(
+          resolvedPrice.mul(balance).div(new Decimal(10).pow(coin.decimals))
+        );
 
         return {
-          price: resolvedPrice.toPrecision(6),
-          value: balance.toPrecision(8),
+          price: resolvedPrice.toDP(5).toString(),
+          value: balance.toDP(3).toString(),
           ...coin,
         };
       });
 
       useStablecoinsPositions.setState({ stablecoinPositions });
-      useStablecoinsPositions.setState({ depegLoss: depegloss.toPrecision(8) });
       useStablecoinsPositions.setState({
-        totalValue: totalValue.toPrecision(3),
+        depegLoss: depegloss.toDP(3).toString(),
+      });
+      useStablecoinsPositions.setState({
+        totalValue: totalValue.toDP(3).toString(),
       });
     },
   };

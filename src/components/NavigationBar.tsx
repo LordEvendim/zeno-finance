@@ -13,7 +13,6 @@ import { NavLink } from "react-router-dom";
 
 import { truncateAddress } from "../helpers/truncateAddress";
 import { useWallet } from "../hooks/useWallet";
-import { useDataFeeds } from "../stores/useDataFeeds";
 import { useUserData } from "../stores/useUserData";
 
 interface NavigationBarProps {}

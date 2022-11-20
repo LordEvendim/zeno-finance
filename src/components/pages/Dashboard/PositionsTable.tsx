@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useBastion } from "../../../stores/useBastion";
-import { useDataFeeds } from "../../../stores/useDataFeeds";
+import { useDexDataFeed } from "../../../stores/useDexDataFeed";
 import { useStablecoinsPositions } from "../../../stores/useStablecoinsPositions";
 
 interface PositionsTableProps {}
@@ -18,6 +18,7 @@ interface PositionsTableProps {}
 export const PositionsTable: React.FC<PositionsTableProps> = () => {
   const stableTotalValue = useStablecoinsPositions((state) => state.totalValue);
   const lendingTotalValue = useBastion((state) => state.totalValue);
+  const dexTotalValue = useDexDataFeed((state) => state.totalValue);
 
   return (
     <TableContainer>
@@ -44,7 +45,7 @@ export const PositionsTable: React.FC<PositionsTableProps> = () => {
           </Tr>
           <Tr>
             <Td>DEX liquidity</Td>
-            <Td isNumeric>${useDataFeeds.getState().dexLiquidityTotalValue}</Td>
+            <Td isNumeric>${dexTotalValue}</Td>
           </Tr>
         </Tbody>
       </Table>

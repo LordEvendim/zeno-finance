@@ -1,5 +1,4 @@
 import axios from "axios";
-import Decimal from "decimal.js";
 import { auroraScanDataFeed } from "../aurora-scan/auroraScan";
 
 type Prices = Record<string, PricesDetails>;
@@ -72,17 +71,9 @@ export const requestHistoricalPrice = async (
       }
     }
 
-    // timestamp by block number
-    const bpd = await auroraScanDataFeed.getBlocksPerDay();
-    const cbn = await auroraScanDataFeed.getBlockNumberByTimestamp(
-      Math.round(Date.now() / 1000)
+    const date = await auroraScanDataFeed.getTimestampByBlockNumber(
+      blockNumber
     );
-
-    const daysDiff = Math.floor((cbn - blockNumber) / bpd);
-
-    console.log(daysDiff);
-
-    const date = new Date(Date.now() - daysDiff * 24 * 60 * 60 * 1000);
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDay();

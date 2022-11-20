@@ -1,6 +1,5 @@
 import {
   Box,
-  Center,
   Flex,
   Grid,
   GridItem,
@@ -14,11 +13,22 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import TripolarisLogo from "../../../assets/logos/tripolaris-logo.svg";
+import WannaswapLogo from "../../../assets/logos/wannaswap.png";
+import { separateThousands } from "../../../helpers/numbersFormatting";
+import { useDexDataFeed } from "../../../stores/useDexDataFeed";
 import { DexPositionsTable } from "./DexPositionsTable";
 
 interface DexLiquidityProps {}
 
 export const DexLiquidity: React.FC<DexLiquidityProps> = () => {
+  const totalValue = useDexDataFeed((state) => state.totalValue);
+  const averageApy = useDexDataFeed((state) => state.averageApy);
+  const impernamentLoss = useDexDataFeed((state) => state.impernamentLoss);
+  const impernamentLossP = useDexDataFeed((state) => state.impernamentLossP);
+
+  const tripolarisPositions = useDexDataFeed((state) => state.positions);
+  const wannaswapPositions = useDexDataFeed((state) => state.positionsWanna);
+
   return (
     <Box w={"full"} pr={"100px"}>
       <Box h={"10px"} />
@@ -45,20 +55,28 @@ export const DexLiquidity: React.FC<DexLiquidityProps> = () => {
           <StatGroup>
             <Stat>
               <StatLabel>Total value</StatLabel>
-              <StatNumber fontSize={"5xl"}>$120.00</StatNumber>
+              <StatNumber fontSize={"4xl"}>
+                ${separateThousands(totalValue)}
+              </StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Average APY</StatLabel>
-              <StatNumber fontSize={"4xl"}>$52.00</StatNumber>
+              <StatNumber fontSize={"4xl"}>{averageApy}%</StatNumber>
             </Stat>
             <Stat>
-              <StatLabel>Impernament loss</StatLabel>
-              <StatNumber fontSize={"4xl"}>21.20%</StatNumber>
+              <StatLabel>Impernament loss (%)</StatLabel>
+              <StatNumber fontSize={"4xl"}>{impernamentLossP}%</StatNumber>
+            </Stat>
+            <Stat>
+              <StatLabel>Impernament loss (value)</StatLabel>
+              <StatNumber fontSize={"4xl"}>
+                ${separateThousands(impernamentLoss)}
+              </StatNumber>
             </Stat>
           </StatGroup>
         </GridItem>
         <GridItem
-          colSpan={2}
+          colSpan={4}
           w="100%"
           minH="100"
           rounded={"3xl"}
@@ -75,10 +93,10 @@ export const DexLiquidity: React.FC<DexLiquidityProps> = () => {
             <Image src={TripolarisLogo} h={"30px"} />
             <Heading size={"md"}>Tripolaris</Heading>
           </HStack>
-          <DexPositionsTable />
+          <DexPositionsTable positions={tripolarisPositions} />
         </GridItem>
         <GridItem
-          colSpan={2}
+          colSpan={4}
           w="100%"
           minH="100"
           rounded={"3xl"}
@@ -86,16 +104,16 @@ export const DexLiquidity: React.FC<DexLiquidityProps> = () => {
           alignSelf={"flex-start"}
           boxShadow="0px 0px 15px rgba(0,0,0,0.1)"
           bg={"rgba(255,255,255,0)"}
-          h={"300px"}
           backdropFilter={"blur(10px)"}
           borderColor={"rgba(255,255,255,0.2)"}
           borderWidth={"1px"}
           color={"gray.200"}
-          pos={"relative"}
         >
-          <Center pos={"relative"} top={"40%"}>
-            <Heading opacity={"0.2"}>Coming soon</Heading>
-          </Center>
+          <HStack alignItems={"center"} mb={"20px"}>
+            <Image src={WannaswapLogo} h={"30px"} />
+            <Heading size={"md"}>WannaSwap</Heading>
+          </HStack>
+          <DexPositionsTable positions={wannaswapPositions} />
         </GridItem>
       </Grid>
     </Box>

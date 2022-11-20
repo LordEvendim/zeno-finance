@@ -139,6 +139,20 @@ const createAuroraScanDataFeed = () => {
         throw error;
       }
     },
+    getTimestampByBlockNumber: async (blockNumber: number): Promise<Date> => {
+      const bpd = await auroraScanDataFeed.getBlocksPerDay();
+      const cbn = await auroraScanDataFeed.getBlockNumberByTimestamp(
+        Math.round(Date.now() / 1000)
+      );
+
+      const daysDiff = Math.floor((cbn - blockNumber) / bpd);
+
+      console.log(daysDiff);
+
+      const date = new Date(Date.now() - daysDiff * 24 * 60 * 60 * 1000);
+
+      return date;
+    },
   };
 };
 

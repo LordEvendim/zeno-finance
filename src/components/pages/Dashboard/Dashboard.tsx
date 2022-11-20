@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useDataFeeds } from "../../../stores/useDataFeeds";
-import { ChainNewsTable } from "./ChainNewsTable";
+import { ActivityTable } from "../News/ActivityTable";
 import { PositionsTable } from "./PositionsTable";
 
 interface DashboardProps {}
@@ -104,7 +104,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
           <HStack alignItems={"center"} mb={"20px"}>
             <Heading size={"md"}>On-chain news</Heading>
           </HStack>
-          <ChainNewsTable />
+          <ActivityTable />
         </GridItem>
       </Grid>
     </Box>
