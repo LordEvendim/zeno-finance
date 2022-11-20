@@ -31,7 +31,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
                 display={"inline"}
                 fontSize={"3xl"}
                 color={"white"}
-                textShadow={"0px 0px 10px rgba(255,255,255,0.2)"}
+                textShadow={"0px 0px 15px rgba(255,255,255,0.5)"}
               >
                 Zeno
               </Text>
@@ -40,7 +40,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
                 m={"0px"}
                 fontSize={"3xl"}
                 color={"red.500"}
-                textShadow={"0px 0px 10px rgba(255,0,0,0.2)"}
+                textShadow={"0px 0px 15px rgba(255,0,0,0.5)"}
               >
                 .finance
               </Text>
@@ -49,15 +49,6 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
         </Box>
         <Spacer />
         <HStack spacing="64px">
-          <Button variant="link" textColor="gray.200">
-            <NavLink to={"/about"}>about</NavLink>
-          </Button>
-          <Button variant="link">
-            <NavLink to={"/dashboard"}>
-              <Text color={"gray.200"}>supported assets</Text>
-            </NavLink>
-          </Button>
-
           {useUserData.getState().isLogged ? (
             <Box
               padding={"8px"}

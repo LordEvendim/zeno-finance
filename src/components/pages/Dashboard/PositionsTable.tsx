@@ -9,6 +9,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import { separateThousands } from "../../../helpers/numbersFormatting";
 import { useBastion } from "../../../stores/useBastion";
 import { useDexDataFeed } from "../../../stores/useDexDataFeed";
 import { useStablecoinsPositions } from "../../../stores/useStablecoinsPositions";
@@ -37,15 +38,15 @@ export const PositionsTable: React.FC<PositionsTableProps> = () => {
         <Tbody>
           <Tr>
             <Td>Stablecoins</Td>
-            <Td isNumeric>${stableTotalValue}</Td>
+            <Td isNumeric>${separateThousands(stableTotalValue)}</Td>
           </Tr>
           <Tr>
             <Td>Lending positions</Td>
-            <Td isNumeric>${lendingTotalValue}</Td>
+            <Td isNumeric>${separateThousands(lendingTotalValue)}</Td>
           </Tr>
           <Tr>
             <Td>DEX liquidity</Td>
-            <Td isNumeric>${dexTotalValue}</Td>
+            <Td isNumeric>${separateThousands(dexTotalValue)}</Td>
           </Tr>
         </Tbody>
       </Table>

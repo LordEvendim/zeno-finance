@@ -28,9 +28,9 @@ export const useWallet = (): useWalletType => {
         params: [
           {
             ...networks[
-            process.env.NODE_ENV === "development"
-              ? AvailableNetworks.AURORA
-              : AvailableNetworks.AURORA
+              process.env.NODE_ENV === "development"
+                ? AvailableNetworks.AURORA
+                : AvailableNetworks.AURORA
             ],
           },
         ],
@@ -47,8 +47,8 @@ export const useWallet = (): useWalletType => {
 
       if (!signer) throw new Error("Metamask is not connected");
 
-      // login(address);
-      // setProvider(provider);
+      login(address);
+      setProvider(provider);
       setIsConnecting(false);
     } catch (error: any) {
       console.log(error);

@@ -10,15 +10,17 @@ import { News } from "./components/pages/News/News";
 import { Stablecoin } from "./components/pages/Stablecoin/Stablecoin";
 import { Sidebar } from "./components/Sidebar";
 import { useRefresh } from "./stores/useRefresh";
+import { useUserData } from "./stores/useUserData";
 
 interface AppProps {}
 
 const App: React.FC<AppProps> = () => {
-  // const refresh = useRefresh((state) => state.refresh);
+  const refresh = useRefresh((state) => state.refresh);
+  const isLogged = useUserData((state) => state.isLogged);
 
-  // useEffect(() => {
-  //   refresh();
-  // }, [refresh]);
+  useEffect(() => {
+    if (isLogged) refresh();
+  }, [refresh, isLogged]);
 
   return (
     <>

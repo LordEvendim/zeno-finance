@@ -62,7 +62,9 @@ const dexes: PoolsByDexList = {
 
 const createDexDataFeed = (dexes: PoolsByDexList) => {
   const provider = useProvider.getState().provider;
-  const address = useUserData.getState().address;
+  const getAddress = () => {
+    return useUserData.getState().address;
+  };
   const pairContracts: Record<string, Contract> = {};
 
   const getPairContract = (address: string) => {
@@ -86,9 +88,9 @@ const createDexDataFeed = (dexes: PoolsByDexList) => {
     const token0 = new ethers.Contract(token0Address, ERC20.abi, provider);
     const token1 = new ethers.Contract(token1Address, ERC20.abi, provider);
 
-    const t0Depo = token0.filters.Transfer(address, pairAddress);
+    const t0Depo = token0.filters.Transfer(getAddress(), pairAddress);
 
-    const t1Depo = token1.filters.Transfer(address, pairAddress);
+    const t1Depo = token1.filters.Transfer(getAddress(), pairAddress);
 
     const t0Events = await token0.queryFilter(t0Depo, block, block);
     const t1Events = await token1.queryFilter(t1Depo, block, block);
@@ -123,11 +125,11 @@ const createDexDataFeed = (dexes: PoolsByDexList) => {
 
     const userMintsFilter = contract.filters.Transfer(
       ethers.constants.AddressZero,
-      address,
+      getAddress(),
       null
     );
     const userBurnFilter = contract.filters.Transfer(
-      address,
+      getAddress(),
       ethers.constants.AddressZero,
       null
     );
@@ -280,6 +282,8 @@ const createDexDataFeed = (dexes: PoolsByDexList) => {
   };
 
   const getData = async () => {
+    console.log(getAddress());
+
     try {
       const positionsTrisolaris: Array<Promise<DexPositionDetails>> = [];
       const positionsWannaswap: Array<Promise<DexPositionDetails>> = [];
