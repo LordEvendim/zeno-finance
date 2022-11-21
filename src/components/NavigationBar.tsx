@@ -31,7 +31,9 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
                 display={"inline"}
                 fontSize={"3xl"}
                 color={"white"}
-                textShadow={"0px 0px 15px rgba(255,255,255,0.5)"}
+                textShadow={
+                  "0px 0px 15px rgba(255,255,255,0.5), 0px 0px 5px rgba(255,255,255,0.3)"
+                }
               >
                 Zeno
               </Text>
@@ -39,8 +41,10 @@ export const NavigationBar: React.FC<NavigationBarProps> = () => {
                 display={"inline"}
                 m={"0px"}
                 fontSize={"3xl"}
-                color={"red.500"}
-                textShadow={"0px 0px 15px rgba(255,0,0,0.5)"}
+                color={"#6DCBD9"}
+                textShadow={
+                  "0px 0px 15px rgba(109,203,217,0.5), 0px 0px 5px rgba(109,203,217,0.3)"
+                }
               >
                 .finance
               </Text>

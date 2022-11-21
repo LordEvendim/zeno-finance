@@ -31,8 +31,8 @@ export const useRefresh = create(
       },
     }),
     {
-      name: "refresh-storage", // unique name
-      getStorage: () => localStorage, // (optional) by default, 'localStorage' is used
+      name: "refresh-storage",
+      getStorage: () => localStorage,
     }
   )
 );

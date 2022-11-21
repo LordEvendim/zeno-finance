@@ -1,5 +1,6 @@
 import { createStandaloneToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
+import { persist } from "zustand/middleware";
 import create from "zustand";
 import { AuroraTransactionDetails } from "../modules/aurora-scan/auroraScan";
 
@@ -19,30 +20,50 @@ interface TrackedAddress {
 
 const { toast } = createStandaloneToast();
 
-export const useNews = create<useNewsStore>((set, get) => ({
-  trackedActivity: "-",
-  transactionValue: "-",
-  largestChange: "-",
-  activity: [],
-  trackedAddreses: [],
-  removeTrackedAddress: (address: string) => {
-    const tracked = [...get().trackedAddreses].filter((a) => a.address !== address);
-    return set({ trackedAddreses: tracked })
-  },
-  addAddress: (address: string) => {
-    const isAddress = ethers.utils.isAddress(address);
+export const useNews = create(
+  persist<useNewsStore>(
+    (set, get) => ({
+      trackedActivity: "-",
+      transactionValue: "-",
+      largestChange: "-",
+      activity: [],
+      trackedAddreses: [],
+      removeTrackedAddress: (address: string) => {
+        const tracked = [...get().trackedAddreses].filter(
+          (a) => a.address !== address
+        );
+        return set({ trackedAddreses: tracked });
+      },
+      addAddress: (address: string) => {
+        const isAddress = ethers.utils.isAddress(address);
 
-    if (!isAddress) {
-      return toast({ status: "error", description: "Invalid address", position: "top" });
+        if (!isAddress) {
+          return toast({
+            status: "error",
+            description: "Invalid address",
+            position: "top",
+          });
+        }
+
+        if (get().trackedAddreses.length >= 10) {
+          return toast({
+            status: "error",
+            description: "Addreses limit reached",
+            position: "top",
+          });
+        }
+
+        // Remove duplicates
+        get().removeTrackedAddress(address);
+
+        return set({
+          trackedAddreses: [{ address }, ...get().trackedAddreses],
+        });
+      },
+    }),
+    {
+      name: "news-storage",
+      getStorage: () => localStorage,
     }
-
-    if (get().trackedAddreses.length >= 10) {
-      return toast({ status: "error", description: "Addreses limit reached", position: "top" })
-    }
-
-    // Remove duplicates
-    get().removeTrackedAddress(address);
-
-    return set({ trackedAddreses: [{ address }, ...get().trackedAddreses] })
-  }
-}));
+  )
+);
