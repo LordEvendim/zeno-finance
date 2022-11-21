@@ -103,7 +103,10 @@ const createStablecoinDataFeed = () => {
 
         return {
           price: resolvedPrice.toDP(5).toString(),
-          value: balance.toDP(3).toString(),
+          value: balance
+            .div(new Decimal(10).pow(coin.decimals))
+            .toDP(3)
+            .toString(),
           ...coin,
         };
       });
