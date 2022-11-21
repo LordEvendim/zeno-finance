@@ -43,9 +43,11 @@ const createNewsDataFeed = () => {
           userTransactions.forEach((transaction) => {
             console.log(transaction);
 
-            const formatedAddress = ethers.utils.getAddress(transaction.from);
+            const formatedAddress = ethers.utils
+              .getAddress(transaction.from)
+              .toString();
 
-            if (trackedAddresses.includes(formatedAddress)) {
+            if (trackedAddresses.includes(formatedAddress.toString())) {
               totalValue = totalValue.add(transaction.value);
               allTxs.push(transaction);
             }
@@ -65,6 +67,10 @@ const createNewsDataFeed = () => {
         const formatedTotalValueUSD = formatedTotalValue
           .mul(ethPrice)
           .toPrecision(5);
+
+        console.log("LOG");
+        console.log(allTxs.length);
+        console.log(allTxs);
 
         useNews.setState({ transactionValue: formatedTotalValueUSD });
         useNews.setState({ activity: allTxs });

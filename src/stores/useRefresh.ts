@@ -2,6 +2,7 @@ import create from "zustand";
 import { persist } from "zustand/middleware";
 import { bastionDataFeed } from "../modules/bastion/bastionDataFeed";
 import { dexDataFeed } from "../modules/dex/dexDataFeeds";
+import { newsDataFeed } from "../modules/news/newsDataFeed";
 import { stablecoinDataFeed } from "../modules/stablecoins/stablecoinDataFeeds";
 import { useDataFeeds } from "./useDataFeeds";
 
@@ -22,6 +23,7 @@ export const useRefresh = create(
         const bastion = bastionDataFeed.fetchData();
         const stable = stablecoinDataFeed.getStablecoinData();
         const dex = dexDataFeed.getData();
+        const news = newsDataFeed.getNewsData();
 
         await Promise.allSettled([bastion, stable, dex]);
 

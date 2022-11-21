@@ -36,6 +36,7 @@ export const useNews = create(
       },
       addAddress: (address: string) => {
         const isAddress = ethers.utils.isAddress(address);
+        address = ethers.utils.getAddress(address);
 
         if (!isAddress) {
           return toast({
