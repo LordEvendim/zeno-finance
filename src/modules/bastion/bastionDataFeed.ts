@@ -202,7 +202,9 @@ const createBastionDataFeed = () => {
         .mul(new Decimal(position.apy));
     });
 
-    const averageAPY = averageQuotient.div(totalValue);
+    const averageAPY = totalValue.eq("0")
+      ? new Decimal("0")
+      : averageQuotient.div(totalValue);
 
     useBastion.setState({ totalValue: totalValue.toPrecision(5) });
     useBastion.setState({ positions });

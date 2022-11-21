@@ -337,7 +337,9 @@ const createDexDataFeed = (dexes: PoolsByDexList) => {
         );
       });
 
-      averageApy = averageApy.div(totalValue).toDP(3);
+      averageApy = totalValue.eq("0")
+        ? new Decimal("0")
+        : averageApy.div(totalValue).toDP(3);
       impernamentLoss = impernamentLoss.div(totalValue).toDP(3);
 
       useDexDataFeed.setState({

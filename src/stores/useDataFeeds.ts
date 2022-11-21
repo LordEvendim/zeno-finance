@@ -34,7 +34,7 @@ export const useDataFeeds = create<useDataFeedsStore>((set) => ({
     let _dexAPY = useDexDataFeed.getState().averageApy;
 
     if (_lendingAPY === "-") _lendingAPY = "0";
-    if (_dexAPY === "0") _dexAPY = "0";
+    if (_dexAPY === "-") _dexAPY = "0";
 
     const lendingAPY = new Decimal(_lendingAPY);
     const dexAPY = new Decimal(_dexAPY);
@@ -45,6 +45,8 @@ export const useDataFeeds = create<useDataFeedsStore>((set) => ({
       .div(lending.add(dexliquidity));
 
     // biggest position
+    console.log(lendingAPY);
+    console.log(dexAPY);
 
     set({
       totalValue: totalValue.toDP(3).toString(),
